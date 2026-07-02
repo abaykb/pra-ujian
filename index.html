@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Pra-Sukses — Selamat Datang</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --grad-a:#FF7A3D;
+    --grad-b:#F5365C;
+    --grad-c:#FFC542;
+    --accent:#F5365C;
+    --accent-dark:#D91E4A;
+    --bg:#FFF8F4;
+    --card-bg:#FFFFFF;
+    --ink:#241934;
+    --slate:#7C7488;
+    --line:#F1E4E0;
+    --radius:24px;
+  }
+
+  [data-theme="blue"]{
+    --grad-a:#4AC6FF;
+    --grad-b:#3A6FF7;
+    --grad-c:#7CE0FF;
+    --accent:#3A6FF7;
+    --accent-dark:#2952C8;
+    --bg:#F3F8FF;
+    --line:#E3EBFB;
+  }
+  [data-theme="purple"]{
+    --grad-a:#B18BFF;
+    --grad-b:#7B2FF7;
+    --grad-c:#FF8CD9;
+    --accent:#7B2FF7;
+    --accent-dark:#5B1FC2;
+    --bg:#F8F4FF;
+    --line:#EBE0FB;
+  }
+  [data-theme="green"]{
+    --grad-a:#3DDC97;
+    --grad-b:#0FA968;
+    --grad-c:#B6F09C;
+    --accent:#0FA968;
+    --accent-dark:#0B8153;
+    --bg:#F2FBF6;
+    --line:#DCF3E6;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    transition:background 0.5s ease;
+  }
+
+  /* ===== Floating gradient blobs ===== */
+  .blob-field{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    z-index:0;
+    pointer-events:none;
+  }
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(50px);
+    opacity:0.55;
+    background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    transition:background 0.5s ease;
+  }
+  .blob.b1{ width:340px; height:340px; top:-100px; left:-80px; animation:float1 16s ease-in-out infinite; }
+  .blob.b2{ width:260px; height:260px; top:10%; right:-100px; background:linear-gradient(135deg, var(--grad-c), var(--grad-b)); animation:float2 20s ease-in-out infinite; }
+  .blob.b3{ width:300px; height:300px; bottom:-120px; left:15%; background:linear-gradient(135deg, var(--grad-b), var(--grad-c)); animation:float3 18s ease-in-out infinite; }
+  .blob.b4{ width:200px; height:200px; bottom:8%; right:8%; animation:float1 14s ease-in-out infinite reverse; opacity:0.4; }
+  .blob.b5{ width:160px; height:160px; top:40%; left:45%; background:linear-gradient(135deg, var(--grad-c), var(--grad-a)); animation:float2 22s ease-in-out infinite; opacity:0.35; }
+
+  @keyframes float1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(60px,80px) scale(1.15); }
+  }
+  @keyframes float2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(-70px,50px) scale(0.9); }
+  }
+  @keyframes float3{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(50px,-60px) scale(1.1); }
+  }
+
+  .content{ position:relative; z-index:1; }
+
+  /* ===== Top bar ===== */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 28px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .logo{
+    width:38px; height:38px;
+    border-radius:12px;
+    background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-family:'Poppins', sans-serif;
+    font-weight:800;
+    font-size:16px;
+  }
+  .brand span{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--ink);
+  }
+
+  .theme-switcher{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--card-bg);
+    padding:7px;
+    border-radius:100px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.06);
+  }
+  .theme-dot{
+    width:26px; height:26px;
+    border-radius:50%;
+    border:2px solid transparent;
+    cursor:pointer;
+    padding:0;
+    transition:transform 0.2s ease, border-color 0.2s ease;
+  }
+  .theme-dot:hover{ transform:scale(1.12); }
+  .theme-dot.active{ border-color:var(--ink); transform:scale(1.15); }
+  .theme-dot.orange{ background:linear-gradient(135deg,#FF7A3D,#F5365C); }
+  .theme-dot.blue{ background:linear-gradient(135deg,#4AC6FF,#3A6FF7); }
+  .theme-dot.purple{ background:linear-gradient(135deg,#B18BFF,#7B2FF7); }
+  .theme-dot.green{ background:linear-gradient(135deg,#3DDC97,#0FA968); }
+
+  /* ===== Hero ===== */
+  .hero{
+    text-align:center;
+    padding:44px 20px 30px;
+  }
+  .hero .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    color:#fff;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    letter-spacing:0.3px;
+    padding:8px 18px;
+    border-radius:100px;
+    box-shadow:0 8px 20px -6px var(--accent);
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-family:'Poppins', sans-serif;
+    font-weight:800;
+    font-size:clamp(30px, 5vw, 46px);
+    line-height:1.2;
+    color:var(--ink);
+  }
+  .hero h1 .grad-text{
+    background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p{
+    margin-top:14px;
+    font-size:15.5px;
+    color:var(--slate);
+    max-width:480px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+  }
+
+  /* ===== Menu section ===== */
+  .menu-wrap{
+    max-width:1020px;
+    margin:0 auto;
+    padding:18px 20px 90px;
+  }
+  .menu-heading{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .menu-heading h2{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:var(--ink);
+  }
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:22px;
+  }
+  @media (max-width: 860px){
+    .card-grid{ grid-template-columns:1fr; max-width:420px; margin:0 auto;}
+  }
+
+  .exam-card{
+    position:relative;
+    background:var(--card-bg);
+    border-radius:var(--radius);
+    padding:0;
+    border:none;
+    cursor:pointer;
+    text-align:left;
+    overflow:hidden;
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+    display:flex;
+    flex-direction:column;
+    font-family:inherit;
+    box-shadow:0 6px 20px rgba(20,10,30,0.06);
+  }
+  .exam-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 20px 40px -10px var(--accent);
+  }
+  .exam-card:focus-visible{
+    outline:3px solid var(--accent-dark);
+    outline-offset:3px;
+  }
+
+  .card-top{
+    background:linear-gradient(135deg, var(--grad-a), var(--grad-b));
+    padding:26px 24px 40px;
+    position:relative;
+    transition:background 0.5s ease;
+  }
+  .card-top::after{
+    content:"";
+    position:absolute;
+    left:0; right:0; bottom:-1px;
+    height:32px;
+    background:var(--card-bg);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    transform:scaleX(1.3);
+  }
+  .card-top .tag{
+    font-family:'Poppins', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    color:#fff;
+    background:rgba(255,255,255,0.25);
+    display:inline-block;
+    padding:4px 12px;
+    border-radius:100px;
+    margin-bottom:16px;
+  }
+  .icon-badge{
+    width:52px; height:52px;
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.22);
+    backdrop-filter:blur(4px);
+  }
+  .icon-badge svg{ width:26px; height:26px; stroke:#fff; }
+
+  .card-body{
+    padding:14px 24px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex-grow:1;
+  }
+  .card-body h3{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--ink);
+  }
+  .card-body p{
+    font-size:13.5px;
+    color:var(--slate);
+    line-height:1.55;
+    flex-grow:1;
+  }
+  .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:6px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .card-footer .cta{
+    font-size:13px;
+    font-weight:700;
+    font-family:'Poppins', sans-serif;
+    color:var(--accent);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .card-footer .cta svg{
+    width:14px; height:14px;
+    stroke:var(--accent);
+    transition:transform 0.2s ease;
+  }
+  .exam-card:hover .card-footer .cta svg{ transform:translateX(4px); }
+  .card-footer .status{
+    width:8px; height:8px;
+    border-radius:50%;
+    background:#22C55E;
+    box-shadow:0 0 0 4px rgba(34,197,94,0.18);
+  }
+
+  footer.page-footer{
+    text-align:center;
+    padding:0 20px 40px;
+    font-size:12px;
+    color:var(--slate);
+    position:relative;
+    z-index:1;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .blob, .exam-card{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body data-theme="orange">
+
+<div class="blob-field">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div class="blob b5"></div>
+</div>
+
+<div class="content">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">P</div>
+      <span>Portal Pra-Sukses</span>
+    </div>
+    <div class="theme-switcher">
+      <button class="theme-dot orange active" data-theme-btn="orange" title="Oranye" aria-label="Tema oranye"></button>
+      <button class="theme-dot blue" data-theme-btn="blue" title="Biru" aria-label="Tema biru"></button>
+      <button class="theme-dot purple" data-theme-btn="purple" title="Ungu" aria-label="Tema ungu"></button>
+      <button class="theme-dot green" data-theme-btn="green" title="Hijau" aria-label="Tema hijau"></button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="badge">✦ Langkah Awal Menuju Sukses</div>
+    <h1>Selamat Datang, <span class="grad-text">Calon Peserta Ujian</span></h1>
+    <p>Setiap perjalanan besar dimulai dari langkah pertama. Pilih jenis ujian di bawah ini dan mulai wujudkan hasil terbaikmu.</p>
+  </div>
+
+  <div class="menu-wrap">
+    <div class="menu-heading">
+      <h2>Pilih Jalur Suksesmu</h2>
+    </div>
+
+    <div class="card-grid">
+
+      <button class="exam-card" onclick="sendPrompt('Saya ingin membuka menu Ujian CAT SKD')">
+        <div class="card-top">
+          <span class="tag">CAT</span>
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="12" rx="1.5"></rect>
+              <path d="M8 20h8"></path>
+              <path d="M12 16v4"></path>
+              <path d="M7 9l2.5 2L7 13"></path>
+              <path d="M12 13h3"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>Ujian CAT SKD</h3>
+          <p>Seleksi Kompetensi Dasar berbasis Computer Assisted Test, mengukur karakteristik pribadi, intelegensi umum, dan wawasan kebangsaan.</p>
+          <div class="card-footer">
+            <span class="cta">Buka menu
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+            </span>
+            <span class="status" title="Tersedia"></span>
+          </div>
+        </div>
+      </button>
+
+      <button class="exam-card" onclick="sendPrompt('Saya ingin membuka menu Ujian SKB')">
+        <div class="card-top">
+          <span class="tag">SKB</span>
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 3h8l4 4v14H7z"></path>
+              <path d="M15 3v4h4"></path>
+              <path d="M9.5 13.5l2 2 4-4.5"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>Ujian SKB</h3>
+          <p>Seleksi Kompetensi Bidang untuk menguji kemampuan teknis, manajerial, dan sosio kultural sesuai formasi jabatan yang dilamar.</p>
+          <div class="card-footer">
+            <span class="cta">Buka menu
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+            </span>
+            <span class="status" title="Tersedia"></span>
+          </div>
+        </div>
+      </button>
+
+      <button class="exam-card" onclick="sendPrompt('Saya ingin membuka menu Ujian Nasional')">
+        <div class="card-top">
+          <span class="tag">UN</span>
+          <div class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 8l10-4 10 4-10 4-10-4z"></path>
+              <path d="M6 10.5V16c0 1.3 2.7 3 6 3s6-1.7 6-3v-5.5"></path>
+              <path d="M22 8v6"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>Ujian Nasional</h3>
+          <p>Evaluasi standar kompetensi lulusan tingkat nasional untuk mengukur capaian belajar peserta didik secara menyeluruh.</p>
+          <div class="card-footer">
+            <span class="cta">Buka menu
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+            </span>
+            <span class="status" title="Tersedia"></span>
+          </div>
+        </div>
+      </button>
+
+    </div>
+  </div>
+
+  <footer class="page-footer">PORTAL PRA-SUKSES · SATU LANGKAH LEBIH DEKAT MENUJU IMPIANMU</footer>
+
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('[data-theme-btn]');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const theme = btn.getAttribute('data-theme-btn');
+      document.body.setAttribute('data-theme', theme);
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
